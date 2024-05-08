@@ -1,0 +1,33 @@
+.box{
+  flex-direction: column;
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+  width: 49%;
+  text-align: center;
+  padding-top: 30px;
+}
+
+.bilet{
+  border: 3px dotted black;
+  border-radius: 20px;
+  width: 260px;
+  margin: auto;
+}
+
+table{
+  width: 100%;
+  margin: auto;
+}
+
+th{
+  border-bottom: 1px solid gray;
+  height: 30px;
+}
+
+td{
+  height: 30px;
+  border-bottom: 2px dotted gray;
+  text-align: center;
+}

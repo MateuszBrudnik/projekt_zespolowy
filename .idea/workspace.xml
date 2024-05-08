@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="a59030dc-3a7e-4832-a27b-00e0a44e1b84" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../functions/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../functions/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../functions/src/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../functions/src/config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../functions/src/loyalty.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../functions/src/loyalty.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../functions/src/services/loyalty-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../functions/src/services/loyalty-service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../scripts/enable-api.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../../scripts/enable-api.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../scripts/serve.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../../scripts/serve.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../scripts/service-account-key.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../../scripts/service-account-key.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../scripts/setup.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../../scripts/setup.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../www/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../www/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../www/src/loyalty/Rewards.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../www/src/loyalty/Rewards.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../www/src/loyalty/SignIn.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../www/src/loyalty/SignIn.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../www/src/loyalty/SignUp.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../www/src/loyalty/SignUp.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../www/src/loyalty/SignUpConfirmation.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../www/src/loyalty/SignUpConfirmation.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectId" id="2gBNRjLmVJDYjDViMbTlnOsVJYu" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/g2mat/Downloads/ProjektST2-main/ProjektST2-main/Angular",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a59030dc-3a7e-4832-a27b-00e0a44e1b84" name="Changes" comment="" />
+      <created>1715167007030</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1715167007030</updated>
+      <workItem from="1715167008694" duration="17000" />
+    </task>
+    <servers />
+  </component>
+</project>

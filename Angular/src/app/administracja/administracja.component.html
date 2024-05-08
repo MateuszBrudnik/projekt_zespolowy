@@ -1,0 +1,26 @@
+
+  <table class="mat-elevation-z8">
+    <thead>
+    <tr>
+      <th>Nazwa</th>
+      <th>Czas wydatku</th>
+      <th>Kwota</th>
+      <th>Akcja</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let expense of Expenses">
+      <td>{{ expense.name }}</td>
+      <td>{{ expense.expenseTime }}</td>
+      <td>{{expense.price}} zł</td>
+      <td><mat-icon fontIcon="edit" color="primary" (click)="openDialog(expense.id)"></mat-icon><mat-icon fontIcon="delete" color="warn" (click)="Usun(expense.id)"></mat-icon></td>
+    </tr>
+    </tbody>
+  </table>
+  <br><br>
+<div style="text-align: center; width: 100%">
+  Legenda:
+  <br>
+  <mat-icon fontIcon="edit" color="primary"></mat-icon> - edytuj
+  <mat-icon fontIcon="delete" color="warn"></mat-icon> - usuń
+</div>
