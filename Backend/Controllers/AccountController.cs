@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Projekt.Entities;
 
@@ -37,6 +36,14 @@ namespace Projekt.Controllers
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+            else
+            {
+                
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    Console.WriteLine(error.ErrorMessage);
+                }
+            }
 
             return BadRequest(ModelState);
         }
@@ -50,10 +57,17 @@ namespace Projekt.Controllers
 
                 if (result.Succeeded)
                 {
-                    return Ok(new { message = "Login successful" });
+                    return Ok(new { token = "sample-jwt-token" });
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid login attempt");
+            }
+            else
+            {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    Console.WriteLine(error.ErrorMessage);
+                }
             }
 
             return BadRequest(ModelState);

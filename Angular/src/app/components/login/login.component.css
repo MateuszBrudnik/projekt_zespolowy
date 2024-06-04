@@ -1,0 +1,25 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+mat-card {
+  padding: 20px;
+  width: 300px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
+
+.register-link {
+  margin-top: 20px;
+  text-align: center;
+}

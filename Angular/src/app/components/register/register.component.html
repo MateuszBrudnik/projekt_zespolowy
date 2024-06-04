@@ -1,0 +1,28 @@
+<div class="register-container">
+  <mat-card>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email">
+        <mat-error *ngIf="registerForm.get('email').invalid">Valid email is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input matInput type="password" formControlName="password">
+        <mat-error *ngIf="registerForm.get('password').invalid">Password is required and must be at least 6 characters</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Confirm Password</mat-label>
+        <input matInput type="password" formControlName="confirmPassword">
+        <mat-error *ngIf="registerForm.get('confirmPassword').invalid">Password confirmation is required</mat-error>
+      </mat-form-field>
+
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+      <button mat-raised-button type="submit" [disabled]="registerForm.invalid">Register</button>
+    </form>
+  </mat-card>
+</div>

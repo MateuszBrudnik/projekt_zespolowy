@@ -1,5 +1,11 @@
-<div class="header">
-  <a mat-raised-button color="warn" href="/admin">Administracja</a>
-</div>
+<mat-toolbar color="primary">
+  <span>Expense Tracker</span>
+  <span class="spacer"></span>
+  <button mat-button routerLink="/expenses">Expenses</button>
+  <button mat-button routerLink="/incomes">Incomes</button>
+  <button mat-button routerLink="/reports">Reports</button>
+  <button mat-button routerLink="/analysis">Analysis</button>
+  <button mat-button routerLink="/notifications">Notifications</button>
+  <button mat-button (click)="logout()">Logout</button>
+</mat-toolbar>
 <router-outlet></router-outlet>
-
