@@ -29,6 +29,8 @@ import { AnalysisComponent } from './components/analysis/analysis.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
 import { RegisterComponent } from './components/register/register.component';
 import {AddExpenseDialogComponent} from "./components/expenses/add-expense-dialog/add-expense-dialog.component";
+import {MatDialogModule} from "@angular/material/dialog";
+
 
 
 @NgModule({
@@ -62,7 +64,8 @@ import {AddExpenseDialogComponent} from "./components/expenses/add-expense-dialo
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]
