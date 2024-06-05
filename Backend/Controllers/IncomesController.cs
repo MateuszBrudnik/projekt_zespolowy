@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Projekt.Entities;
 using Projekt.Services;
 
 namespace Projekt.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class IncomesController : ControllerBase
@@ -48,11 +50,16 @@ namespace Projekt.Controllers
             }
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                return Unauthorized(new { Message = "User is not authenticated" });
+            }
             income.UserId = userId;
 
             await _incomeService.AddIncomeAsync(income);
             return CreatedAtAction(nameof(GetIncome), new { id = income.Id }, income);
         }
+
 
 
         [HttpPut("{id}")]

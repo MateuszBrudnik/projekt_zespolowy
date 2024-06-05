@@ -35,7 +35,7 @@ export class AddIncomeDialogComponent implements OnInit {
       const newIncome: Income = {
         id: 0,
         ...this.form.value,
-        userId: '' // userId will be set on the backend
+        userId: 'id' // userId will be set on the backend
       };
       this.incomeService.addIncome(newIncome).subscribe({
         next: () => {
@@ -52,5 +52,6 @@ export class AddIncomeDialogComponent implements OnInit {
       });
     }
   }
+
 
 }

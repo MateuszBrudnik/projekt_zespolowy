@@ -31,6 +31,8 @@ import { RegisterComponent } from './components/register/register.component';
 import {AddExpenseDialogComponent} from "./components/expenses/add-expense-dialog/add-expense-dialog.component";
 import {MatDialogModule} from "@angular/material/dialog";
 import { AddIncomeDialogComponent } from './components/incomes/add-income-dialog/add-income-dialog.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './auth.interceptor';
 
 
 
@@ -69,7 +71,7 @@ import { AddIncomeDialogComponent } from './components/incomes/add-income-dialog
     MatSnackBarModule,
     MatDialogModule
   ],
-  providers: [],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -36,6 +36,14 @@ export class AuthService {
       );
   }
 
+  getToken(): string {
+    return localStorage.getItem(this.tokenKey) || '';
+  }
+
+  setToken(token: string): void {
+    localStorage.setItem(this.tokenKey, token);
+  }
+
   logout(): void {
     localStorage.removeItem(this.tokenKey);
     this.router.navigate(['/login']);
