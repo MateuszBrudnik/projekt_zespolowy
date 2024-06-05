@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using Microsoft.AspNetCore.Mvc;
 using ProjektST2.DTO;
 using ProjektST2.Entities;
@@ -48,3 +48,4 @@ namespace ProjektST2.Controllers
     }
 }
 
+*/
