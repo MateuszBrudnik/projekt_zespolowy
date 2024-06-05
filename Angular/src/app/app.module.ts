@@ -28,6 +28,8 @@ import { ReportsComponent } from './components/reports/reports.component';
 import { AnalysisComponent } from './components/analysis/analysis.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
 import { RegisterComponent } from './components/register/register.component';
+import {AddExpenseDialogComponent} from "./components/expenses/add-expense-dialog/add-expense-dialog.component";
+
 
 @NgModule({
   declarations: [
@@ -38,7 +40,8 @@ import { RegisterComponent } from './components/register/register.component';
     ReportsComponent,
     AnalysisComponent,
     NotificationsComponent,
-    RegisterComponent
+    RegisterComponent,
+    AddExpenseDialogComponent
   ],
   imports: [
     BrowserModule,
