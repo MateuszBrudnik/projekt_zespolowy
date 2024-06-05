@@ -41,7 +41,10 @@ namespace Projekt.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                               .Select(e => e.ErrorMessage)
+                                               .ToList();
+                return BadRequest(new { Message = "Validation failed", Errors = errors });
             }
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -50,6 +53,7 @@ namespace Projekt.Controllers
             await _incomeService.AddIncomeAsync(income);
             return CreatedAtAction(nameof(GetIncome), new { id = income.Id }, income);
         }
+
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateIncome(int id, [FromBody] Income income)

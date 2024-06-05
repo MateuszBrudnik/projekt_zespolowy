@@ -37,9 +37,20 @@ export class AddIncomeDialogComponent implements OnInit {
         ...this.form.value,
         userId: '' // userId will be set on the backend
       };
-      this.incomeService.addIncome(newIncome).subscribe(() => {
-        this.dialogRef.close(true);
+      this.incomeService.addIncome(newIncome).subscribe({
+        next: () => {
+          this.dialogRef.close(true);
+        },
+        error: (error) => {
+          if (error.status === 400 && error.error && error.error.Errors) {
+            console.log('Validation Errors:', error.error.Errors);
+            alert('Validation Errors: ' + error.error.Errors.join(', '));
+          } else {
+            console.error('An error occurred:', error);
+          }
+        }
       });
     }
   }
+
 }
