@@ -16,6 +16,7 @@ options.UseSqlite(builder.Configuration.GetConnectionString("connectionString"))
 builder.Services.AddScoped<IExpenseService, ExpenseService>();
 builder.Services.AddScoped<IIncomeService, IncomeService>();
 builder.Services.AddScoped<IWarningService, WarningService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 // Dodajemy Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()

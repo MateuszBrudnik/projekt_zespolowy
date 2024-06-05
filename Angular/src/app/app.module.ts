@@ -33,6 +33,7 @@ import {MatDialogModule} from "@angular/material/dialog";
 import { AddIncomeDialogComponent } from './components/incomes/add-income-dialog/add-income-dialog.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth.interceptor';
+import { AddCategoryDialogComponent } from './components/categories/add-category-dialog/add-category-dialog.component';
 
 
 
@@ -47,7 +48,8 @@ import { AuthInterceptor } from './auth.interceptor';
     NotificationsComponent,
     RegisterComponent,
     AddExpenseDialogComponent,
-    AddIncomeDialogComponent
+    AddIncomeDialogComponent,
+    AddCategoryDialogComponent
   ],
   imports: [
     BrowserModule,
