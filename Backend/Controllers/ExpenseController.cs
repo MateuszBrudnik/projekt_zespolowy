@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Projekt.Entities;
 using Projekt.Services;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using Projekt.Data;
 
 namespace Projekt.Controllers
 {
@@ -13,10 +15,12 @@ namespace Projekt.Controllers
     public class ExpenseController : ControllerBase
     {
         private readonly IExpenseService _expenseService;
+        private readonly ExpenseContext _context;
 
-        public ExpenseController(IExpenseService expenseService)
+        public ExpenseController(IExpenseService expenseService, ExpenseContext context)
         {
             _expenseService = expenseService;
+            _context = context;
         }
 
         [HttpGet]
@@ -24,6 +28,21 @@ namespace Projekt.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             return Ok(await _expenseService.GetExpensesAsync(userId));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Expense>> PostExpense(Expense expense)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            expense.UserId = userId;
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await _expenseService.AddExpenseAsync(expense);
+            return CreatedAtAction("GetExpense", new { id = expense.Id }, expense);
         }
 
         [HttpGet("{id}")]
@@ -37,31 +56,19 @@ namespace Projekt.Controllers
             return Ok(expense);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> AddExpense([FromBody] Expense expense)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            expense.UserId = userId;
-
-            await _expenseService.AddExpenseAsync(expense);
-            return CreatedAtAction(nameof(GetExpense), new { id = expense.Id }, expense);
-        }
-
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateExpense(int id, [FromBody] Expense expense)
         {
-            if (id != expense.Id || !ModelState.IsValid)
+            if (id != expense.Id)
             {
-                return BadRequest(ModelState);
+                return BadRequest();
             }
-
-            await _expenseService.UpdateExpenseAsync(expense);
-            return NoContent();
+            if (ModelState.IsValid)
+            {
+                await _expenseService.UpdateExpenseAsync(expense);
+                return NoContent();
+            }
+            return BadRequest(ModelState);
         }
 
         [HttpDelete("{id}")]
@@ -72,7 +79,6 @@ namespace Projekt.Controllers
             {
                 return NotFound();
             }
-
             await _expenseService.DeleteExpenseAsync(id);
             return NoContent();
         }

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Projekt.Entities;
 using Projekt.Services;
+using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace Projekt.Controllers
 {
@@ -70,7 +70,7 @@ namespace Projekt.Controllers
             var html = "<html><body><h1>Monthly Expense Report</h1><ul>";
             foreach (var expense in expenses)
             {
-                html += $"<li>{expense.Name}: {expense.Amount:C} on {expense.Date.ToShortDateString()}</li>";
+                html += $" <li>{expense.Name}: {expense.Amount:C} on {expense.Date.ToShortDateString()}</li>";
             }
             html += "</ul></body></html>";
             return html;

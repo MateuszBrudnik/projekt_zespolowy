@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Projekt.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Projekt.Entities;
 
 namespace Projekt.Services
 {
