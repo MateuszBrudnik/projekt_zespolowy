@@ -7,9 +7,9 @@ import { Income } from '../models/income';
   providedIn: 'root'
 })
 export class IncomeService {
-  private apiUrl = 'http://localhost:5170/api/income';
+  private apiUrl = 'http://localhost:5170/api/incomes';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getIncomes(): Observable<Income[]> {
     return this.http.get<Income[]>(this.apiUrl);
@@ -19,8 +19,8 @@ export class IncomeService {
     return this.http.post<Income>(this.apiUrl, income);
   }
 
-  updateIncome(income: Income): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/${income.id}`, income);
+  updateIncome(id: number, income: Income): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/${id}`, income);
   }
 
   deleteIncome(id: number): Observable<void> {

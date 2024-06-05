@@ -30,6 +30,7 @@ import { NotificationsComponent } from './components/notifications/notifications
 import { RegisterComponent } from './components/register/register.component';
 import {AddExpenseDialogComponent} from "./components/expenses/add-expense-dialog/add-expense-dialog.component";
 import {MatDialogModule} from "@angular/material/dialog";
+import { AddIncomeDialogComponent } from './components/incomes/add-income-dialog/add-income-dialog.component';
 
 
 
@@ -43,7 +44,8 @@ import {MatDialogModule} from "@angular/material/dialog";
     AnalysisComponent,
     NotificationsComponent,
     RegisterComponent,
-    AddExpenseDialogComponent
+    AddExpenseDialogComponent,
+    AddIncomeDialogComponent
   ],
   imports: [
     BrowserModule,
