@@ -4,7 +4,7 @@ using ProjektST2.DTO;
 using ProjektST2.Entities;
 using ProjektST2.Services;
 
-namespace ProjektST2.Controllers
+/*namespace ProjektST2.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
@@ -48,3 +48,4 @@ namespace ProjektST2.Controllers
     }
 }
 
+*/

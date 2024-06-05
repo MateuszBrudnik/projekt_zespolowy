@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ProjektST2.DTO;
 using ProjektST2.Entities;
 
-namespace ProjektST2.Services
+/*namespace ProjektST2.Services
 {
 	public class AdminService: IAdminService
 	{
@@ -74,3 +74,4 @@ namespace ProjektST2.Services
   }
 }
 
+*/

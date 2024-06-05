@@ -4,16 +4,16 @@ using ProjektST2.Entities;
 
 namespace ProjektST2
 {
-	public class AplikacjaDBContext : DbContext
+	public class AplikacjaDBContext// : DbContext
     {
-        public AplikacjaDBContext(DbContextOptions<AplikacjaDBContext> options) : base(options) { }
+   //     public AplikacjaDBContext(DbContextOptions<AplikacjaDBContext> options) : base(options) { }
 
-        public DbSet<Wydatek> Wydatek { get; set; }
+   //     public DbSet<Wydatek> Wydatek { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
+   //     protected override void OnModelCreating(ModelBuilder modelBuilder)
+  //      {
 
-        }
+   //     }
     }
 }
 
