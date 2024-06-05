@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Projekt.Entities;
 using Projekt.Services;
@@ -17,41 +19,61 @@ namespace Projekt.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Income>> GetIncomes()
+        public async Task<ActionResult<IEnumerable<Income>>> GetIncomes()
         {
-            return Ok(_incomeService.GetIncomes());
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return Ok(await _incomeService.GetIncomesAsync(userId));
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Income> GetIncome(int id)
+        public async Task<ActionResult<Income>> GetIncome(int id)
         {
-            return Ok(_incomeService.GetIncomeById(id));
+            var income = await _incomeService.GetIncomeByIdAsync(id);
+            if (income == null)
+            {
+                return NotFound();
+            }
+            return Ok(income);
         }
 
         [HttpPost]
-        public IActionResult AddIncome([FromBody] Income income)
+        public async Task<ActionResult> AddIncome([FromBody] Income income)
         {
-            _incomeService.AddIncome(income);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            income.UserId = userId;
+
+            await _incomeService.AddIncomeAsync(income);
             return CreatedAtAction(nameof(GetIncome), new { id = income.Id }, income);
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateIncome(int id, [FromBody] Income income)
+        public async Task<IActionResult> UpdateIncome(int id, [FromBody] Income income)
         {
-            if (id != income.Id)
+            if (id != income.Id || !ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
-            _incomeService.UpdateIncome(income);
+
+            await _incomeService.UpdateIncomeAsync(income);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteIncome(int id)
+        public async Task<IActionResult> DeleteIncome(int id)
         {
-            _incomeService.DeleteIncome(id);
+            var income = await _incomeService.GetIncomeByIdAsync(id);
+            if (income == null)
+            {
+                return NotFound();
+            }
+
+            await _incomeService.DeleteIncomeAsync(id);
             return NoContent();
         }
     }
 }
-

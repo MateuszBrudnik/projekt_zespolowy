@@ -20,7 +20,8 @@ namespace Projekt.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Konfiguracja klucza głównego dla PushSubscriptionModel
+            modelBuilder.Entity<Expense>().HasKey(e => e.Id);
+            modelBuilder.Entity<Income>().HasKey(i => i.Id);
             modelBuilder.Entity<PushSubscriptionModel>()
                 .HasKey(p => p.Id);
         }

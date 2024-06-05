@@ -1,4 +1,7 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Projekt.Data;
 using Projekt.Entities;
 
@@ -13,35 +16,35 @@ namespace Projekt.Services
             _context = context;
         }
 
-        public IEnumerable<Income> GetIncomes()
+        public async Task<IEnumerable<Income>> GetIncomesAsync(string userId)
         {
-            return _context.Incomes.ToList();
+            return await _context.Incomes.Where(i => i.UserId == userId).ToListAsync();
         }
 
-        public Income GetIncomeById(int id)
+        public async Task<Income> GetIncomeByIdAsync(int id)
         {
-            return _context.Incomes.Find(id);
+            return await _context.Incomes.FindAsync(id);
         }
 
-        public void AddIncome(Income income)
+        public async Task AddIncomeAsync(Income income)
         {
             _context.Incomes.Add(income);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void UpdateIncome(Income income)
+        public async Task UpdateIncomeAsync(Income income)
         {
-            _context.Incomes.Update(income);
-            _context.SaveChanges();
+            _context.Entry(income).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
 
-        public void DeleteIncome(int id)
+        public async Task DeleteIncomeAsync(int id)
         {
-            var income = _context.Incomes.Find(id);
+            var income = await _context.Incomes.FindAsync(id);
             if (income != null)
             {
                 _context.Incomes.Remove(income);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
     }

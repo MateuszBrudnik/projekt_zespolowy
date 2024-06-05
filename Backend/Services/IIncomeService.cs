@@ -1,15 +1,15 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Projekt.Entities;
 
 namespace Projekt.Services
 {
     public interface IIncomeService
     {
-        IEnumerable<Income> GetIncomes();
-        Income GetIncomeById(int id);
-        void AddIncome(Income income);
-        void UpdateIncome(Income income);
-        void DeleteIncome(int id);
+        Task<IEnumerable<Income>> GetIncomesAsync(string userId);
+        Task<Income> GetIncomeByIdAsync(int id);
+        Task AddIncomeAsync(Income income);
+        Task UpdateIncomeAsync(Income income);
+        Task DeleteIncomeAsync(int id);
     }
 }
-
