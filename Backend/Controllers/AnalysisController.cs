@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Projekt.Services;
 
@@ -16,9 +18,10 @@ namespace Projekt.Controllers
         }
 
         [HttpGet("monthly-summary")]
-        public IActionResult GetMonthlySummary()
+        public async Task<IActionResult> GetMonthlySummary()
         {
-            var expenses = _expenseService.GetExpenses();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var expenses = await _expenseService.GetExpensesAsync(userId);
             var summary = expenses.GroupBy(e => new { e.Date.Year, e.Date.Month })
                                   .Select(g => new
                                   {
@@ -31,9 +34,10 @@ namespace Projekt.Controllers
         }
 
         [HttpGet("category-summary")]
-        public IActionResult GetCategorySummary()
+        public async Task<IActionResult> GetCategorySummary()
         {
-            var expenses = _expenseService.GetExpenses();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var expenses = await _expenseService.GetExpensesAsync(userId);
             var summary = expenses.GroupBy(e => e.Category.Name)
                                   .Select(g => new
                                   {

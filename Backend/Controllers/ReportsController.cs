@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Projekt.Entities;
 using Projekt.Services;
 
 namespace Projekt.Controllers
-
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -20,9 +22,10 @@ namespace Projekt.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetFilteredReport([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate, [FromQuery] string category)
+        public async Task<IActionResult> GetFilteredReport([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate, [FromQuery] string category)
         {
-            var expenses = _expenseService.GetExpenses();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var expenses = await _expenseService.GetExpensesAsync(userId);
 
             if (startDate.HasValue)
             {
@@ -43,18 +46,20 @@ namespace Projekt.Controllers
         }
 
         [HttpGet("pdf")]
-        public IActionResult GetPdfReport()
+        public async Task<IActionResult> GetPdfReport()
         {
-            var expenses = _expenseService.GetExpensesByDateRange(DateTime.Now.AddMonths(-1), DateTime.Now);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var expenses = await _expenseService.GetExpensesByDateRangeAsync(userId, DateTime.Now.AddMonths(-1), DateTime.Now);
             var htmlContent = GenerateHtmlReport(expenses);
             var pdfBytes = _pdfService.GenerateReportPdf(htmlContent);
             return File(pdfBytes, "application/pdf", "Report.pdf");
         }
 
         [HttpGet("csv")]
-        public IActionResult GetCsvReport()
+        public async Task<IActionResult> GetCsvReport()
         {
-            var expenses = _expenseService.GetExpensesByDateRange(DateTime.Now.AddMonths(-1), DateTime.Now);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var expenses = await _expenseService.GetExpensesByDateRangeAsync(userId, DateTime.Now.AddMonths(-1), DateTime.Now);
             var csvContent = GenerateCsvReport(expenses);
             var csvBytes = System.Text.Encoding.UTF8.GetBytes(csvContent);
             return File(csvBytes, "text/csv", "Report.csv");
@@ -65,7 +70,7 @@ namespace Projekt.Controllers
             var html = "<html><body><h1>Monthly Expense Report</h1><ul>";
             foreach (var expense in expenses)
             {
-                html += $" <li>{ expense.Name}: { expense.Amount:C} on { expense.Date.ToShortDateString()}</li>";
+                html += $"<li>{expense.Name}: {expense.Amount:C} on {expense.Date.ToShortDateString()}</li>";
             }
             html += "</ul></body></html>";
             return html;
@@ -83,4 +88,3 @@ namespace Projekt.Controllers
         }
     }
 }
-
