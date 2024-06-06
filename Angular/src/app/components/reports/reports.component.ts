@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
 import { ReportService } from '../../services/report.service';
-import { Expense } from '../../models/expense';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-reports',
@@ -9,34 +8,34 @@ import { Expense } from '../../models/expense';
   styleUrls: ['./reports.component.css']
 })
 export class ReportsComponent implements OnInit {
+  reports: any[] = [];
   displayedColumns: string[] = ['name', 'amount', 'date', 'category'];
-  dataSource = new MatTableDataSource<Expense>();
-
-  startDate: Date;
-  endDate: Date;
-  category: string;
+  startDate?: Date;
+  endDate?: Date;
 
   constructor(private reportService: ReportService) { }
 
   ngOnInit(): void {
+    this.loadReports();
   }
 
-  loadReport(): void {
-    this.reportService.getFilteredReport(this.startDate, this.endDate, this.category).subscribe(expenses => {
-      this.dataSource.data = expenses;
+  loadReports(): void {
+    this.reportService.getReports(this.startDate, this.endDate).subscribe(reports => {
+      this.reports = reports;
     });
   }
 
-  downloadPdf(): void {
-    this.reportService.getPdfReport().subscribe(blob => {
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'report.pdf';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
+  exportPdf(): void {
+    this.reportService.exportPdf(this.startDate, this.endDate).subscribe(data => {
+      const blob = new Blob([data], { type: 'application/pdf' });
+      saveAs(blob, 'report.pdf');
+    });
+  }
+
+  exportCsv(): void {
+    this.reportService.exportCsv(this.startDate, this.endDate).subscribe(data => {
+      const blob = new Blob([data], { type: 'text/csv' });
+      saveAs(blob, 'report.csv');
     });
   }
 }

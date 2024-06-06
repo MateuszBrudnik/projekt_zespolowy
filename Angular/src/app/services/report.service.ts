@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Expense } from '../models/expense';
 
 @Injectable({
   providedIn: 'root'
@@ -11,15 +10,36 @@ export class ReportService {
 
   constructor(private http: HttpClient) { }
 
-  getFilteredReport(startDate: Date, endDate: Date, category: string): Observable<Expense[]> {
-    return this.http.get<Expense[]>(`${this.apiUrl}?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}&category=${category}`);
+  getReports(startDate?: Date, endDate?: Date): Observable<any[]> {
+    let params = new HttpParams();
+    if (startDate) {
+      params = params.set('startDate', startDate.toISOString());
+    }
+    if (endDate) {
+      params = params.set('endDate', endDate.toISOString());
+    }
+    return this.http.get<any[]>(this.apiUrl, { params });
   }
 
-  getPdfReport(): Observable<Blob> {
-    return this.http.get(`${this.apiUrl}/pdf`, { responseType: 'blob' });
+  exportPdf(startDate?: Date, endDate?: Date): Observable<Blob> {
+    let params = new HttpParams();
+    if (startDate) {
+      params = params.set('startDate', startDate.toISOString());
+    }
+    if (endDate) {
+      params = params.set('endDate', endDate.toISOString());
+    }
+    return this.http.get(`${this.apiUrl}/pdf`, { params, responseType: 'blob' });
   }
 
-  getCsvReport(): Observable<Blob> {
-    return this.http.get(`${this.apiUrl}/csv`, { responseType: 'blob' });
+  exportCsv(startDate?: Date, endDate?: Date): Observable<Blob> {
+    let params = new HttpParams();
+    if (startDate) {
+      params = params.set('startDate', startDate.toISOString());
+    }
+    if (endDate) {
+      params = params.set('endDate', endDate.toISOString());
+    }
+    return this.http.get(`${this.apiUrl}/csv`, { params, responseType: 'blob' });
   }
 }

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Projekt.Entities;
 using Projekt.Services;
-using System.Threading.Tasks;
-using System.Security.Claims;
 
 namespace Projekt.Controllers
 {
@@ -22,44 +22,28 @@ namespace Projekt.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetFilteredReport([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate, [FromQuery] string category)
+        public async Task<IActionResult> GetReports([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var expenses = await _expenseService.GetExpensesAsync(userId);
-
-            if (startDate.HasValue)
-            {
-                expenses = expenses.Where(e => e.Date >= startDate.Value).ToList();
-            }
-
-            if (endDate.HasValue)
-            {
-                expenses = expenses.Where(e => e.Date <= endDate.Value).ToList();
-            }
-
-            if (!string.IsNullOrEmpty(category))
-            {
-                expenses = expenses.Where(e => e.Category.Name.Equals(category, StringComparison.OrdinalIgnoreCase)).ToList();
-            }
-
+            var expenses = await _expenseService.GetExpensesByDateRangeAsync(userId ,startDate ?? DateTime.MinValue, endDate ?? DateTime.MaxValue);
             return Ok(expenses);
         }
 
         [HttpGet("pdf")]
-        public async Task<IActionResult> GetPdfReport()
+        public async Task<IActionResult> GetPdfReport([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var expenses = await _expenseService.GetExpensesByDateRangeAsync(userId, DateTime.Now.AddMonths(-1), DateTime.Now);
+            var expenses = await _expenseService.GetExpensesByDateRangeAsync(userId ,startDate ?? DateTime.Now.AddMonths(-1), endDate ?? DateTime.Now);
             var htmlContent = GenerateHtmlReport(expenses);
-            var pdfBytes = _pdfService.GenerateReportPdf(htmlContent);
+            var pdfBytes = _pdfService.GeneratePdf(htmlContent);
             return File(pdfBytes, "application/pdf", "Report.pdf");
         }
 
         [HttpGet("csv")]
-        public async Task<IActionResult> GetCsvReport()
+        public async Task<IActionResult> GetCsvReport([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var expenses = await _expenseService.GetExpensesByDateRangeAsync(userId, DateTime.Now.AddMonths(-1), DateTime.Now);
+            var expenses = await _expenseService.GetExpensesByDateRangeAsync(userId, startDate ?? DateTime.Now.AddMonths(-1), endDate ?? DateTime.Now);
             var csvContent = GenerateCsvReport(expenses);
             var csvBytes = System.Text.Encoding.UTF8.GetBytes(csvContent);
             return File(csvBytes, "text/csv", "Report.csv");
@@ -70,7 +54,7 @@ namespace Projekt.Controllers
             var html = "<html><body><h1>Monthly Expense Report</h1><ul>";
             foreach (var expense in expenses)
             {
-                html += $" <li>{expense.Name}: {expense.Amount:C} on {expense.Date.ToShortDateString()}</li>";
+                html += $"<li>{expense.Name}: {expense.Amount:C} on {expense.Date.ToShortDateString()}</li>";
             }
             html += "</ul></body></html>";
             return html;
