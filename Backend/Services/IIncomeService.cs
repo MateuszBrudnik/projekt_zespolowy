@@ -11,5 +11,6 @@ namespace Projekt.Services
         Task AddIncomeAsync(Income income);
         Task UpdateIncomeAsync(Income income);
         Task DeleteIncomeAsync(int id);
+        Task<IEnumerable<Income>> GetIncomesByDateRangeAsync(string userId, DateTime startDate, DateTime endDate);
     }
 }

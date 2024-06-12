@@ -24,6 +24,10 @@ namespace Projekt.Data
             modelBuilder.Entity<Income>().HasKey(i => i.Id);
             modelBuilder.Entity<PushSubscriptionModel>()
                 .HasKey(p => p.Id);
+            modelBuilder.Entity<Expense>()
+            .HasOne(e => e.Category)
+            .WithMany(c => c.Expenses)
+            .HasForeignKey(e => e.CategoryId);
         }
     }
 }

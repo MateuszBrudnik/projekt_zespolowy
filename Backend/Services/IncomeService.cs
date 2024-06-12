@@ -47,5 +47,12 @@ namespace Projekt.Services
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<IEnumerable<Income>> GetIncomesByDateRangeAsync(string userId, DateTime startDate, DateTime endDate)
+        {
+            return await _context.Incomes
+                .Where(i => i.UserId == userId && i.Date >= startDate && i.Date <= endDate)
+                .ToListAsync();
+        }
     }
 }

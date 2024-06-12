@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Projekt.Entities;
 using Projekt.Services;
@@ -14,11 +15,13 @@ namespace Projekt.Controllers
     {
         private readonly IExpenseService _expenseService;
         private readonly PdfService _pdfService;
+        private readonly IReportService _reportService;
 
-        public ReportsController(IExpenseService expenseService, PdfService pdfService)
+        public ReportsController(IExpenseService expenseService, PdfService pdfService, IReportService reportService)
         {
             _expenseService = expenseService;
             _pdfService = pdfService;
+            _reportService = reportService;
         }
 
         [HttpGet]
@@ -27,6 +30,21 @@ namespace Projekt.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var expenses = await _expenseService.GetExpensesByDateRangeAsync(userId ,startDate ?? DateTime.MinValue, endDate ?? DateTime.MaxValue);
             return Ok(expenses);
+        }
+
+        [HttpGet("summary")]
+        public async Task<IActionResult> GetSummary([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+        {
+           var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var totalExpenses = await _reportService.GetTotalExpensesAsync(userId, startDate, endDate);
+            var totalIncomes = await _reportService.GetTotalIncomesAsync(userId, startDate, endDate);
+
+            return Ok(new { TotalExpenses = totalExpenses, TotalIncomes = totalIncomes });
         }
 
         [HttpGet("pdf")]
