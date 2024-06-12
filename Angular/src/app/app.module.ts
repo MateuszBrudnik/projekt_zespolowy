@@ -21,7 +21,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-
 import { ExpensesComponent } from './components/expenses/expenses.component';
 import { IncomesComponent } from './components/incomes/incomes.component';
 import { ReportsComponent } from './components/reports/reports.component';
@@ -34,6 +33,7 @@ import { AddIncomeDialogComponent } from './components/incomes/add-income-dialog
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth.interceptor';
 import { AddCategoryDialogComponent } from './components/categories/add-category-dialog/add-category-dialog.component';
+import {BaseChartDirective, NgChartsModule} from "ng2-charts";
 
 
 
@@ -51,28 +51,29 @@ import { AddCategoryDialogComponent } from './components/categories/add-category
     AddIncomeDialogComponent,
     AddCategoryDialogComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
-    MatSidenavModule,
-    MatListModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatTableModule,
-    MatCardModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatSnackBarModule,
-    MatDialogModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatIconModule,
+        MatSidenavModule,
+        MatListModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatTableModule,
+        MatCardModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatSnackBarModule,
+        MatDialogModule,
+      NgChartsModule
+    ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })

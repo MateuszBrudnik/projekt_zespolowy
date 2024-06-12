@@ -1,51 +1,34 @@
-﻿using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Projekt.Services;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Projekt.Controllers
+[ApiController]
+[Route("api/[controller]")]
+public class AnalysisController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AnalysisController : ControllerBase
+    private readonly IReportService _reportService;
+
+    public AnalysisController(IReportService reportService)
     {
-        private readonly IExpenseService _expenseService;
+        _reportService = reportService;
+    }
 
-        public AnalysisController(IExpenseService expenseService)
-        {
-            _expenseService = expenseService;
-        }
+    [HttpGet("spending-trends")]
+    public async Task<IActionResult> GetSpendingTrends(DateTime startDate, DateTime endDate, string userId)
+    {
+        var trends = await _reportService.GetSpendingTrendsAsync(startDate, endDate, userId);
+        return Ok(trends);
+    }
 
-        [HttpGet("monthly-summary")]
-        public async Task<IActionResult> GetMonthlySummary()
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var expenses = await _expenseService.GetExpensesAsync(userId);
-            var summary = expenses.GroupBy(e => new { e.Date.Year, e.Date.Month })
-                                  .Select(g => new
-                                  {
-                                      Year = g.Key.Year,
-                                      Month = g.Key.Month,
-                                      Total = g.Sum(e => e.Amount)
-                                  })
-                                  .ToList();
-            return Ok(summary);
-        }
+    [HttpGet("category-wise-expenses")]
+    public async Task<IActionResult> GetCategoryWiseExpenses(DateTime startDate, DateTime endDate, string userId)
+    {
+        var expenses = await _reportService.GetCategoryWiseExpensesAsync(startDate, endDate, userId);
+        return Ok(expenses);
+    }
 
-        [HttpGet("category-summary")]
-        public async Task<IActionResult> GetCategorySummary()
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var expenses = await _expenseService.GetExpensesAsync(userId);
-            var summary = expenses.GroupBy(e => e.Category.Name)
-                                  .Select(g => new
-                                  {
-                                      Category = g.Key,
-                                      Total = g.Sum(e => e.Amount)
-                                  })
-                                  .ToList();
-            return Ok(summary);
-        }
+    [HttpGet("monthly-summary")]
+    public async Task<IActionResult> GetMonthlyIncomeExpenseSummary(string userId)
+    {
+        var summary = await _reportService.GetMonthlyIncomeExpenseSummaryAsync(userId);
+        return Ok(summary);
     }
 }

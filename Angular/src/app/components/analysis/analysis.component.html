@@ -1,12 +1,26 @@
-<div class="container">
-  <h1>Analysis</h1>
-  <div *ngIf="analysis">
-    <p>Total Expenses: {{analysis.totalExpenses}}</p>
-    <p>Total Incomes: {{analysis.totalIncomes}}</p>
-    <p>Balance: {{analysis.balance}}</p>
-    <h2>Warnings:</h2>
-    <ul>
-      <li *ngFor="let warning of analysis.warnings">{{warning}}</li>
-    </ul>
+<div class="analysis-container">
+  <h2>Financial Analysis</h2>
+  <div class="summary">
+    <p>Total Income: {{ totalIncome | currency }}</p>
+    <p>Total Expense: {{ totalExpense | currency }}</p>
+    <p>Net Balance: {{ netBalance | currency }}</p>
+  </div>
+  <div class="trends">
+    <h3>Expense Trends</h3>
+    <canvas baseChart
+            [datasets]="expenseTrends"
+            [options]="chartOptions"
+            [labels]="trendLabels"
+            chartType="'line'">
+    </canvas>
+  </div>
+  <div class="categories">
+    <h3>Expenses by Category</h3>
+    <canvas baseChart
+            [datasets]="categoryExpenses"
+            [options]="chartOptions"
+            [labels]="categoryLabels"
+            chartType="'pie'">
+    </canvas>
   </div>
 </div>

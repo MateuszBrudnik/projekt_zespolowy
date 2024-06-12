@@ -10,14 +10,16 @@ export class AnalysisService {
   private apiUrl = 'http://localhost:5170/api/analysis';
 
   constructor(private http: HttpClient) { }
-  getAnalysis(): Observable<Analysis> {
-    return this.http.get<Analysis>(this.apiUrl);
-  }
-  getMonthlySummary(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/monthly-summary`);
+  getReportSummary(startDate: Date, endDate: Date): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/summary?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`);
   }
 
-  getCategorySummary(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/category-summary`);
+  getExpenseTrends(startDate: Date, endDate: Date): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/trends?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`);
   }
+
+  getCategoryExpenses(startDate: Date, endDate: Date): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/categories?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`);
+  }
+
 }
