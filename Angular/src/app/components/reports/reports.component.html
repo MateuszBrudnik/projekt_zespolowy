@@ -15,11 +15,12 @@
 <button mat-button (click)="exportPdf()">Eksportuj do PDF</button>
 <button mat-button (click)="exportCsv()">Eksportuj do CSV</button>
 <div *ngIf="totalExpenses !== undefined && totalIncomes !== undefined">
-  <h3>Summary</h3>
+  <h2>Podsumowanie</h2>
   <p>Wydatki: {{ totalExpenses | currency }}</p>
   <p>Przychody: {{ totalIncomes | currency }}</p>
   <p>Różnica: {{totalIncomes-totalExpenses | currency}}</p>
 </div>
+<h1>Wydatki</h1>
 <table mat-table [dataSource]="reports" class="mat-elevation-z8">
   <!-- Definicja kolumn -->
   <ng-container matColumnDef="name">
@@ -44,5 +45,26 @@
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<h1>Przychody</h1>
+<table mat-table [dataSource]="reports1" class="mat-elevation-z8">
+  <!-- Definicja kolumn -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Nazwa </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="amount">
+    <th mat-header-cell *matHeaderCellDef> Kwota </th>
+    <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="date">
+    <th mat-header-cell *matHeaderCellDef> Data </th>
+    <td mat-cell *matCellDef="let element"> {{element.date | date}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
 </table>
 

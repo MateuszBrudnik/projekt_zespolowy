@@ -21,6 +21,17 @@ export class ReportService {
     return this.http.get<any[]>(this.apiUrl, { params });
   }
 
+  getReports1(startDate?: Date, endDate?: Date): Observable<any[]> {
+    let params = new HttpParams();
+    if (startDate) {
+      params = params.set('startDate', startDate.toISOString());
+    }
+    if (endDate) {
+      params = params.set('endDate', endDate.toISOString());
+    }
+    return this.http.get<any[]>(`${this.apiUrl}/1`, { params });
+  }
+
   exportPdf(startDate?: Date, endDate?: Date): Observable<Blob> {
     let params = new HttpParams();
     if (startDate) {
@@ -45,5 +56,7 @@ export class ReportService {
 
   getSummary(startDate?: Date, endDate?: Date): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/summary?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`);
+
+
   }
 }

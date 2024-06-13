@@ -9,7 +9,9 @@ import { saveAs } from 'file-saver';
 })
 export class ReportsComponent implements OnInit {
   reports: any[] = [];
+  reports1: any[] = [];
   displayedColumns: string[] = ['name', 'amount', 'date', 'category'];
+  displayedColumns1: string[] = ['name', 'amount', 'date'];
   startDate?: Date;
   endDate?: Date;
   totalExpenses: number;
@@ -30,6 +32,10 @@ export class ReportsComponent implements OnInit {
       this.reports = reports;
       console.log(reports);
       this.loadSummary();
+    });
+    this.reportService.getReports1(this.startDate, this.endDate).subscribe(reports1 => {
+      this.reports1 = reports1;
+      console.log(reports1)
     });
   }
 

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Projekt.Entities;
+using Projekt.Migrations;
 using Projekt.Services;
 
 namespace Projekt.Controllers
@@ -32,6 +33,14 @@ namespace Projekt.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var expenses = await _expenseService.GetExpensesByDateRangeAsync(userId ,startDate ?? DateTime.MinValue, endDate ?? DateTime.MaxValue);
             return Ok(expenses);
+        }
+
+        [HttpGet("1")]
+        public async Task<IActionResult> GetReports1([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var incomes = await _incomeService.GetIncomesByDateRangeAsync(userId, startDate ?? DateTime.MinValue, endDate ?? DateTime.MaxValue);
+            return Ok(incomes);
         }
 
         [HttpGet("summary")]
@@ -85,14 +94,18 @@ namespace Projekt.Controllers
         {
             var csv = new System.Text.StringBuilder();
             csv.AppendLine("Nazwa;Kwota;Data;Kategoria");
+            decimal sum = 0;
             foreach (var income in incomes)
             {
                 csv.AppendLine($"{income.Name};{income.Amount};{income.Date.ToShortDateString()};Przychód");
+                sum = sum + income.Amount;
             }
             foreach (var expense in expenses)
             {
                 csv.AppendLine($"{expense.Name};{((expense.Amount)*(-1))};{expense.Date.ToShortDateString()};{expense.Category.Name}");
+                sum = sum - expense.Amount;
             }
+            csv.AppendLine($"Podsumowanie:;{sum};;");
             return csv.ToString();
         }
     }
