@@ -10,16 +10,22 @@ export class AnalysisService {
   private apiUrl = 'http://localhost:5170/api/analysis';
 
   constructor(private http: HttpClient) { }
-  getReportSummary(startDate: Date, endDate: Date): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/summary?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`);
+  getIncomeExpenseSummary(startDate: Date, endDate: Date, userId: string): Observable<any> {
+    let startDate1 = startDate.toISOString();
+    let endDate1 = endDate.toISOString();
+    return this.http.get(`${this.apiUrl}/summary`, { params: { startDate1, endDate1, userId } });
   }
 
-  getExpenseTrends(startDate: Date, endDate: Date): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/trends?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`);
+  getSpendingTrends(startDate: Date, endDate: Date, userId: string): Observable<any> {
+    let startDate1 = startDate.toISOString();
+    let endDate1 = endDate.toISOString();
+    return this.http.get(`${this.apiUrl}/trends`, { params: { startDate1, endDate1, userId } });
   }
 
-  getCategoryExpenses(startDate: Date, endDate: Date): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/categories?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`);
+  getCategoryWiseExpenses(startDate: Date, endDate: Date, userId: string): Observable<any> {
+    let startDate1 = startDate.toISOString();
+    let endDate1 = endDate.toISOString();
+    return this.http.get(`${this.apiUrl}/categories`, { params: { startDate1, endDate1, userId } });
   }
 
 }

@@ -8,41 +8,28 @@ import { Analysis } from '../../models/analysis';
   styleUrls: ['./analysis.component.css']
 })
 export class AnalysisComponent implements OnInit {
-  totalIncome: number;
-  totalExpense: number;
-  netBalance: number;
-  expenseTrends: any[];
-  trendLabels: string[];
-  categoryExpenses: any[];
-  categoryLabels: string[];
-  chartOptions: any;
 
-  constructor(private analysisService: AnalysisService) {
-    this.chartOptions = {
-      responsive: true,
-      maintainAspectRatio: false
-    };
-  }
+  public expenseTrends: any;
+  public categoryExpenses: any;
+  public incomeExpenseSummary: any;
+  private userId = 'YOUR_USER_ID'; // Replace with actual user ID fetching logic
+
+  constructor(private analysisService: AnalysisService) { }
 
   ngOnInit(): void {
-    this.loadAnalysis();
-  }
+    const startDate = new Date(Date.UTC(0, 0, 0, 0, 0, 0));
+    const endDate = new Date();
 
-  loadAnalysis(): void {
-    const startDate = new Date(); // set start date
-    const endDate = new Date(); // set end date
-    this.analysisService.getReportSummary(startDate, endDate).subscribe(data => {
-      this.totalIncome = data.totalIncomes;
-      this.totalExpense = data.totalExpenses;
-      this.netBalance = data.netBalance;
-    });
-    this.analysisService.getExpenseTrends(startDate, endDate).subscribe(data => {
-      this.expenseTrends = data.map(item => item.total);
-      this.trendLabels = data.map(item => item.date);
-    });
-    this.analysisService.getCategoryExpenses(startDate, endDate).subscribe(data => {
-      this.categoryExpenses = data.map(item => item.total);
-      this.categoryLabels = data.map(item => item.category);
-    });
+    this.analysisService.getIncomeExpenseSummary(startDate, endDate, this.userId)
+      .subscribe(data => this.incomeExpenseSummary = data, error => console.error(error));
+    console.log(this.incomeExpenseSummary)
+
+    this.analysisService.getSpendingTrends(startDate, endDate, this.userId)
+      .subscribe(data => this.expenseTrends = data, error => console.error(error));
+    console.log(this.expenseTrends)
+
+    this.analysisService.getCategoryWiseExpenses(startDate, endDate, this.userId)
+      .subscribe(data => this.categoryExpenses = data, error => console.error(error));
+    console.log(this.categoryExpenses)
   }
 }

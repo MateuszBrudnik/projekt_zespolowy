@@ -55,54 +55,39 @@ namespace Projekt.Services
             };
         }
 
-        public async Task<SpendingTrends> GetSpendingTrendsAsync(DateTime startDate, DateTime endDate, string userId)
+        public async Task<List<Trend>> GetSpendingTrendsAsync(DateTime startDate, DateTime endDate, string userId)
         {
-            var expenses = await GetExpensesByDateRangeAsync(startDate, endDate, userId);
-            var groupedByDate = expenses.GroupBy(e => e.Date.Date)
-                                        .Select(g => new { Date = g.Key, Total = g.Sum(e => e.Amount) })
-                                        .OrderBy(g => g.Date)
-                                        .ToList();
-
-            return new SpendingTrends { Trends = (IEnumerable<Trend>)groupedByDate };
+            var expenses = await _expenseService.GetExpensesByDateRangeAsync(userId, startDate, endDate);
+            var trends = expenses
+                .GroupBy(e => e.Date.Date)
+                .Select(g => new Trend { Date = g.Key, Total = g.Sum(e => e.Amount) })
+                .ToList();
+            return trends;
         }
 
-        public async Task<CategoryWiseExpenses> GetCategoryWiseExpensesAsync(DateTime startDate, DateTime endDate, string userId)
+        public async Task<List<CategoryExpense>> GetCategoryWiseExpensesAsync(DateTime startDate, DateTime endDate, string userId)
         {
-            var expenses = await GetExpensesByDateRangeAsync(startDate, endDate, userId);
-            var groupedByCategory = expenses.GroupBy(e => e.Category.Name)
-                                            .Select(g => new { Category = g.Key, Total = g.Sum(e => e.Amount) })
-                                            .OrderByDescending(g => g.Total)
-                                            .ToList();
-
-            return new CategoryWiseExpenses { Expenses = (IEnumerable<CategoryExpense>)groupedByCategory };
+            var expenses = await _expenseService.GetExpensesByDateRangeAsync(userId, startDate, endDate);
+            var categoryExpenses = expenses
+                .GroupBy(e => e.Category.Name)
+                .Select(g => new CategoryExpense { Category = g.Key, Total = g.Sum(e => e.Amount) })
+                .ToList();
+            return categoryExpenses;
         }
 
-        public async Task<MonthlyIncomeExpenseSummary> GetMonthlyIncomeExpenseSummaryAsync(string userId)
+        public async Task<ReportSummary> GetIncomeExpenseSummaryAsync(DateTime startDate, DateTime endDate, string userId)
         {
-            var expenses = await _expenseService.GetExpensesAsync(userId);
-            var incomes = await _incomeService.GetIncomesAsync(userId);
+            var expenses = await _expenseService.GetExpensesByDateRangeAsync(userId, startDate, endDate);
+            var incomes = await _incomeService.GetIncomesByDateRangeAsync(userId, startDate, endDate);
 
-            var groupedExpenses = expenses.GroupBy(e => new { e.Date.Year, e.Date.Month })
-                                          .Select(g => new { g.Key.Year, g.Key.Month, TotalExpenses = g.Sum(e => e.Amount) })
-                                          .ToList();
+            var totalExpenses = expenses.Sum(e => e.Amount);
+            var totalIncomes = incomes.Sum(i => i.Amount);
 
-            var groupedIncomes = incomes.GroupBy(i => new { i.Date.Year, i.Date.Month })
-                                        .Select(g => new { g.Key.Year, g.Key.Month, TotalIncomes = g.Sum(i => i.Amount) })
-                                        .ToList();
-
-            var monthlySummary = from e in groupedExpenses
-                                 join i in groupedIncomes on new { e.Year, e.Month } equals new { i.Year, i.Month } into ei
-                                 from subIncome in ei.DefaultIfEmpty()
-                                 select new MonthlyIncomeExpense
-                                 {
-                                     Year = e.Year,
-                                     Month = e.Month,
-                                     TotalExpenses = e.TotalExpenses,
-                                     TotalIncomes = subIncome?.TotalIncomes ?? 0,
-                                     NetBalance = (subIncome?.TotalIncomes ?? 0) - e.TotalExpenses
-                                 };
-
-            return new MonthlyIncomeExpenseSummary { Summary = monthlySummary.ToList() };
+            return new ReportSummary
+            {
+                TotalExpenses = totalExpenses,
+                TotalIncomes = totalIncomes
+            };
         }
 
     }

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Projekt.Entities
 {
     public class Expense
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -22,8 +25,10 @@ namespace Projekt.Entities
         public string? UserId { get; set; }
 
         [Required]
+        [ForeignKey("Category")]
         public int CategoryId { get; set; }
 
+ 
         public Category? Category { get; set; }
     }
 }

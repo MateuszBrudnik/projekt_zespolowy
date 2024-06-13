@@ -5,6 +5,7 @@ namespace Projekt.Entities
 {
     public class Income
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]

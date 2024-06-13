@@ -19,7 +19,8 @@ export class ReportsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.startDate = new Date(Date.now());
+    let todayDate = new Date(Date.now());
+    this.startDate = new Date(todayDate.getDate());
     this.endDate = new Date(Date.now());
     this.loadReports();
   }

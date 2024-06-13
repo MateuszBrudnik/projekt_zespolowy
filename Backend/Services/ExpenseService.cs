@@ -10,15 +10,17 @@ namespace Projekt.Services
     public class ExpenseService : IExpenseService
     {
         private readonly ExpenseContext _context;
+        private readonly ICategoryService _categoryService;
 
-        public ExpenseService(ExpenseContext context)
+        public ExpenseService(ExpenseContext context, ICategoryService categoryService)
         {
             _context = context;
+            _categoryService = categoryService;
         }
 
         public async Task<IEnumerable<Expense>> GetExpensesAsync(string userId)
         {
-            return await _context.Expenses.Where(e => e.UserId == userId).ToListAsync();
+            return await _context.Expenses.Include(x => x.Category).Where(e => e.UserId == userId).ToListAsync();
         }
 
         public async Task<Expense> GetExpenseByIdAsync(int id)
@@ -50,7 +52,7 @@ namespace Projekt.Services
 
         public async Task<IEnumerable<Expense>> GetExpensesByDateRangeAsync(string userId, DateTime startDate, DateTime endDate)
         {
-            return await _context.Expenses
+            return await _context.Expenses.Include(x => x.Category)
                 .Where(e => e.UserId == userId && e.Date >= startDate && e.Date <= endDate)
                 .ToListAsync();
         }
