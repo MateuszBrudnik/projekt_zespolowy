@@ -18,6 +18,7 @@
   <h3>Summary</h3>
   <p>Wydatki: {{ totalExpenses | currency }}</p>
   <p>Przychody: {{ totalIncomes | currency }}</p>
+  <p>Różnica: {{totalIncomes-totalExpenses | currency}}</p>
 </div>
 <table mat-table [dataSource]="reports" class="mat-elevation-z8">
   <!-- Definicja kolumn -->

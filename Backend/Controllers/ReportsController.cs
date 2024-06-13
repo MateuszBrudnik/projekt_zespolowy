@@ -14,14 +14,16 @@ namespace Projekt.Controllers
     public class ReportsController : ControllerBase
     {
         private readonly IExpenseService _expenseService;
+        private readonly IIncomeService _incomeService;
         private readonly PdfService _pdfService;
         private readonly IReportService _reportService;
 
-        public ReportsController(IExpenseService expenseService, PdfService pdfService, IReportService reportService)
+        public ReportsController(IExpenseService expenseService, PdfService pdfService, IReportService reportService, IIncomeService incomeService)
         {
             _expenseService = expenseService;
             _pdfService = pdfService;
             _reportService = reportService;
+            _incomeService = incomeService;
         }
 
         [HttpGet]
@@ -62,7 +64,8 @@ namespace Projekt.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var expenses = await _expenseService.GetExpensesByDateRangeAsync(userId, startDate ?? DateTime.Now.AddMonths(-1), endDate ?? DateTime.Now);
-            var csvContent = GenerateCsvReport(expenses);
+            var incomes = await _incomeService.GetIncomesByDateRangeAsync(userId, startDate ?? DateTime.Now.AddMonths(-1), endDate ?? DateTime.Now);
+            var csvContent = GenerateCsvReport(expenses, incomes);
             var csvBytes = System.Text.Encoding.UTF8.GetBytes(csvContent);
             return File(csvBytes, "text/csv", "Report.csv");
         }
@@ -78,13 +81,17 @@ namespace Projekt.Controllers
             return html;
         }
 
-        private string GenerateCsvReport(IEnumerable<Expense> expenses)
+        private string GenerateCsvReport(IEnumerable<Expense> expenses, IEnumerable<Income> incomes)
         {
             var csv = new System.Text.StringBuilder();
-            csv.AppendLine("Name,Amount,Date,Category");
+            csv.AppendLine("Nazwa;Kwota;Data;Kategoria");
+            foreach (var income in incomes)
+            {
+                csv.AppendLine($"{income.Name};{income.Amount};{income.Date.ToShortDateString()};Przychód");
+            }
             foreach (var expense in expenses)
             {
-                csv.AppendLine($"{expense.Name},{expense.Amount},{expense.Date.ToShortDateString()},{expense.Category.Name}");
+                csv.AppendLine($"{expense.Name};{((expense.Amount)*(-1))};{expense.Date.ToShortDateString()};{expense.Category.Name}");
             }
             return csv.ToString();
         }
